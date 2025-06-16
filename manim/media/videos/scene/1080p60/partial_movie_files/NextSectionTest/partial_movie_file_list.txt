@@ -1,0 +1,12 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3529212410_2211162746_223132457.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_287858224_3256495558.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_2613896347_3256495558.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_2569161387_631829896.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_1094334188_4131132508.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_524178271_4227516557.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_2569161387_1071484169.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_2413932008_758497372.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_1364061171_2536690036.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_514630582_2536690036.mp4'
+file 'file:C:/Users/BeH4ppy/PycharmProjects/manim/media/videos/scene/1080p60/partial_movie_files/NextSectionTest/3040924799_3789364483_2536690036.mp4'

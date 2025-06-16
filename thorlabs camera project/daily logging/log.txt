@@ -1,0 +1,95 @@
+22-08-03
+succesfully connected camera to python using the example codes given with the sdk. the two issues that i needed to solve was dealing with the sdk
+and pathing on windows regarding the .dll files.
+
+in the example code called polling_example.py, one of the import lines read
+	from thorlabs_tsi_sdk.tl_camera import TLCameraSDK, OPERATION_MODE
+where thorlabs_tsi_sdk was a module i initially was unable to locate. since the installation instructions only mentions installing the sdk pack using pip
+i didnt bother investigating it further. however, opening this package immediately showed the library(?) thorlabs_tsi_sdk containing the modules i was
+looking for. moving this folder to the current working directory (in my project file under PycharmProjects) solved this issue.
+
+the second issue arose from the first lines of the example code polling_example.py, where the method configure_path is imported from windows_setup.py.
+the windows_setup.py contains the method configure_path, which sets the path to find the .dll files given in the windows sdk installation package.
+i solved this by placing the file called 'dlls' in the current working directory, then setting the relative_path_to_dlls to 'dlls' + os.sep, therefore
+minimizing the length of the relative path for simplicity. the rest of the code should then work just fine, as it just adds the absolute path to the
+current directory to the relative path, as well as choosing the 32-bit or 64-bit accordingly, and adds the .dll found in the file to the os.
+
+
+further investigation of the options for actions to perform with camera in the example codes.
+	- tikinter_camera_live_view.py includes methods that are used to acquire and display a live view of what the camera sees
+	- tifffile_tiff_writing_example.py exports images as .tif
+	- color_example.py shows how the mono to color processor is used, with MonoToColorProcessorSDK(), which colors the image directly from the camera
+
+in polling_example.py, during the image polling, the temporary variable frame.image_buffer is created inbetween polling of images. this is stored until the
+next polling attempt, or when the program exits. during this, it is possible to export the pixel data of the image_buffer, printed out to the terminal or
+other operations, exporting to excel spreadsheet or a different matrix/array format, etc.
+
+
+22-08-04
+frame.image_buffer doesnt seem to be exportable as an image using PIL, not sure if it is possible to convert pixel data to an image. should try and
+extract rgb data from the buffer. otherwise exporting as tiff, then using PIL image/imageTK -> pixel data and rgb should work fine. however it would
+be convenient to handle data and images without having to manually export and input files for every analysis.
+some next steps:
+	- get rgb, mono to color to work and export rgb data
+	- pixel data -> analysis/modification -> export image instead of export image -> input image -> pixel data -> analysis/modification -> export image
+
+some thoughts and ideas
+	- is it possible to have a live view and a live analysis of images?
+	- whats the hardware limitations in terms of image quality and fps? possible to modify region of interest and gain, what about resolution, frame rate?
+	if you drop information intake from some areas, can others be raised?
+
+
+22-08-05
+attempting to output color image pixel data, but directly printing the variable only gives a single dimensional array when it is supposed to output multiple
+channels of data.
+the single dimensional array of data is intentional, as there is a method that formats the rgb pixel data so that the array is [R G B R G B R G B ...].
+i would assume that the order the pixel data comes in is left to right, up to down.
+the tifffile example also uses mono to color methods, it should export colorized .tif files.
+
+
+1. get a single frame and display in mono colour
+2a. get multiple frames and display in mono colour
+(2b. convert single frame to RGB and display)
+3. poll multiple frames and check the frame rate (fps)
+4. find ways to increase fps
+    - smaller ROI (lower resolution)
+    - lower exposure time
+    -
+
+- 1ms per image means 1000fps
+- exposure time depends on the frame rate, maximum exposure is the time length of each frame
+- high frame rate means lower exposure, so images get darker
+
+230615
+each frame is saved to a matrix of 3 dimensions, 2 first for the image pixels and the last is the frame number
+[height, width, frame number in order]. default image size: 1080x1440, grayscale image pixel values range are
+[1022,-1022]?, which would be different from the standard [0,255] or [0,1], and are integer values and not floats/double.
+
+pixel values seem to represent a contrast difference and not the illumination value since capping the camera or
+lighting the camera with a flashlight would result in pixel values close to 0 and the image displayed would be
+gray instead of white/black as expected.
+
+230626
+the issues with the pixel values have been solved. the storing matrix was originally set to 8 bit, which wasnt compatible
+with the 10 bit values that the camera gave and resulted in negative pixel values. now that the images show up properly
+i have also changed to showing the images using matplotlib instead of opencv as i found out that opencv isnt really
+recommended for image display. i have also written a method that shows each frame in sequence, where i can also control
+the frame display rate.
+i have yet to be able to confirm how fast the camera is capable of capturing images, which i think i can begin
+investigating now.
+
+230720
+added a live view before the image polling sequence for focus adjustment based on the already existing code
+tkinter_camera_live_view.py. the interface navigation is a little awkward, and the post image polling display
+doesnt work the way i want.
+
+230728
+exposure time seems to be the frames per second control, and exposure time seems to be designed to go very low,
+down to microseconds. also the camera ROI settings are set before the polling, so it is likely that lower ROI can
+lower necessary processing and therefore increase the possible polling speeds.
+
+some more things to work on
+- better interfacing and post image polling display
+- exporting images
+- actually measuring the frame rate
+
